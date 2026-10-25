@@ -842,13 +842,13 @@ function installKakaoSmoothTailFinal(){
   st=document.createElement('style');
   st.id='pm-kakao-smooth-tail-final';
   st.textContent=`
-    /* Kakao tail only — bubble body stays exactly as-is */
+    /* Kakao tail only — bubble body stays exactly as-is. */
     .kkt-bubble{
       position:relative!important;
       overflow:visible!important;
     }
 
-    /* kill every older tail shape */
+    /* Remove every older triangle / crescent / S-curve tail. */
     .kkt-bubble::before,
     .kkt-bubble::after{
       content:none!important;
@@ -858,53 +858,69 @@ function installKakaoSmoothTailFinal(){
       border:0!important;
       background:none!important;
       background-image:none!important;
+      -webkit-mask:none!important;
+      mask:none!important;
       clip-path:none!important;
       box-shadow:none!important;
       transform:none!important;
     }
 
-    /* sent: one small rounded S-curve, entirely inside the bubble height */
+    /*
+      Tail silhouette taken from the user's KakaoTalk reference image:
+      top edge dips DOWN first, then rises into one short rounded tip.
+      Nothing protrudes above the bubble and nothing bulges below it.
+    */
     .kkt-msg.me .kkt-bubble::after{
       content:""!important;
       display:block!important;
       position:absolute!important;
-      top:5px!important;
+      top:0!important;
       right:-7px!important;
-      width:11px!important;
-      height:9px!important;
+      width:15px!important;
+      height:12px!important;
+      background:#fee500!important;
+      background-image:none!important;
+      -webkit-mask-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAmCAAAAACegfaGAAAAz0lEQVR4nO3RIQ7CQBAF0F+QTTAgCFyAm2EwGG7ANRAEg0DgwYPCINAVBAGokgDmI9pud9mFzIgKEkY1M2+nf1ushx0oiiSZDFScJMc6TqaxipPshUh9cs6mj3fO1MObcuhtJ7l08M2aTEOcLPHB6wc4Rxluu934E+cOAGZuLwl8maJOwD4UMbKS2vW8N9zGtfmNe9W6qHgEAKgJdT8/JNyeLZduXxSnZNvz5eLsKr4ybxGF6R5VvIheSfatjs/Nkyi7uamMm5tW85v+/Lf4C6j5DeEvWKf4AAAAAElFTkSuQmCC")!important;
+      mask-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAmCAAAAACegfaGAAAAz0lEQVR4nO3RIQ7CQBAF0F+QTTAgCFyAm2EwGG7ANRAEg0DgwYPCINAVBAGokgDmI9pud9mFzIgKEkY1M2+nf1ushx0oiiSZDFScJMc6TqaxipPshUh9cs6mj3fO1MObcuhtJ7l08M2aTEOcLPHB6wc4Rxluu934E+cOAGZuLwl8maJOwD4UMbKS2vW8N9zGtfmNe9W6qHgEAKgJdT8/JNyeLZduXxSnZNvz5eLsKr4ybxGF6R5VvIheSfatjs/Nkyi7uamMm5tW85v+/Lf4C6j5DeEvWKf4AAAAAElFTkSuQmCC")!important;
+      -webkit-mask-repeat:no-repeat!important;
+      mask-repeat:no-repeat!important;
+      -webkit-mask-position:center!important;
+      mask-position:center!important;
+      -webkit-mask-size:100% 100%!important;
+      mask-size:100% 100%!important;
       border:0!important;
-      background-color:transparent!important;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 9'%3E%3Cpath fill='%23fee500' d='M0 0 C3.2 0 5.6 0 7.6 0 C9.5 0 11 .55 11 1.55 C11 2.45 10.35 3.15 9.45 3.85 C8.4 4.65 7.95 5.4 8.25 6.2 C8.65 7.25 9.65 7.95 11 8.2 C8.8 8.55 6.9 8.25 5.35 7.35 C3.15 6.1 1.45 3.75 0 0 Z'/%3E%3C/svg%3E")!important;
-      background-repeat:no-repeat!important;
-      background-position:center!important;
-      background-size:100% 100%!important;
       clip-path:none!important;
       box-shadow:none!important;
       transform:none!important;
-      z-index:2!important;
+      z-index:3!important;
       pointer-events:none!important;
     }
 
-    /* received: exact mirror, first bubble only */
+    /* Received bubble: exact mirrored silhouette, first bubble only. */
     .kkt-msg.other.first .kkt-bubble::before{
       content:""!important;
       display:block!important;
       position:absolute!important;
-      top:5px!important;
+      top:0!important;
       left:-7px!important;
-      width:11px!important;
-      height:9px!important;
+      width:15px!important;
+      height:12px!important;
+      background:#fff!important;
+      background-image:none!important;
+      -webkit-mask-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAmCAAAAACegfaGAAAAz0lEQVR4nO3RIQ7CQBAF0F+QTTAgCFyAm2EwGG7ANRAEg0DgwYPCINAVBAGokgDmI9pud9mFzIgKEkY1M2+nf1ushx0oiiSZDFScJMc6TqaxipPshUh9cs6mj3fO1MObcuhtJ7l08M2aTEOcLPHB6wc4Rxluu934E+cOAGZuLwl8maJOwD4UMbKS2vW8N9zGtfmNe9W6qHgEAKgJdT8/JNyeLZduXxSnZNvz5eLsKr4ybxGF6R5VvIheSfatjs/Nkyi7uamMm5tW85v+/Lf4C6j5DeEvWKf4AAAAAElFTkSuQmCC")!important;
+      mask-image:url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAAmCAAAAACegfaGAAAAz0lEQVR4nO3RIQ7CQBAF0F+QTTAgCFyAm2EwGG7ANRAEg0DgwYPCINAVBAGokgDmI9pud9mFzIgKEkY1M2+nf1ushx0oiiSZDFScJMc6TqaxipPshUh9cs6mj3fO1MObcuhtJ7l08M2aTEOcLPHB6wc4Rxluu934E+cOAGZuLwl8maJOwD4UMbKS2vW8N9zGtfmNe9W6qHgEAKgJdT8/JNyeLZduXxSnZNvz5eLsKr4ybxGF6R5VvIheSfatjs/Nkyi7uamMm5tW85v+/Lf4C6j5DeEvWKf4AAAAAElFTkSuQmCC")!important;
+      -webkit-mask-repeat:no-repeat!important;
+      mask-repeat:no-repeat!important;
+      -webkit-mask-position:center!important;
+      mask-position:center!important;
+      -webkit-mask-size:100% 100%!important;
+      mask-size:100% 100%!important;
       border:0!important;
-      background-color:transparent!important;
-      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 9'%3E%3Cpath fill='%23ffffff' d='M0 0 C3.2 0 5.6 0 7.6 0 C9.5 0 11 .55 11 1.55 C11 2.45 10.35 3.15 9.45 3.85 C8.4 4.65 7.95 5.4 8.25 6.2 C8.65 7.25 9.65 7.95 11 8.2 C8.8 8.55 6.9 8.25 5.35 7.35 C3.15 6.1 1.45 3.75 0 0 Z'/%3E%3C/svg%3E")!important;
-      background-repeat:no-repeat!important;
-      background-position:center!important;
-      background-size:100% 100%!important;
       clip-path:none!important;
       box-shadow:none!important;
       transform:scaleX(-1)!important;
       transform-origin:center!important;
-      z-index:2!important;
+      z-index:3!important;
       pointer-events:none!important;
     }
 
